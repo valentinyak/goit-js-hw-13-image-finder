@@ -1,0 +1,23 @@
+body {
+  box-sizing: border-box;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+li {
+  list-style: none;
+}
+ul.gallery {
+  display: flex;
+  max-width: 100vw;
+}
+div.photo-card {
+  max-width: 350px;
+}
+div.stats {
+  display: flex;
+  justify-content: center;
+}
