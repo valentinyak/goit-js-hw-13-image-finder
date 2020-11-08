@@ -51,12 +51,16 @@ function clearMarkup() {
   });
 }
 
-function makeRequestAndRenderMarkup() {
-  return apiService
-    .makeFetch(BASE_URL, apiService.options)
-    .then(response => response.json())
-    .then(template)
-    .then(renderMarkup);
+async function makeRequestAndRenderMarkup() {
+  // return apiService
+  //   .makeFetch(BASE_URL, apiService.options)
+  //   .then(response => response.json())
+  //   .then(template)
+  //   .then(renderMarkup);
+  const response = await apiService.makeFetch(BASE_URL, apiService.options);
+  const parsedResponse = await response.json();
+  const markup = await template(parsedResponse);
+  return renderMarkup(markup);
 }
 
 function rememberCurrentSearchQuery() {
