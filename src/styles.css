@@ -1,7 +1,16 @@
 body {
   box-sizing: border-box;
 }
-
+form {
+  margin-top: 20px;
+}
+input {
+  height: 24px;
+}
+button {
+  width: 120px;
+  height: 30px;
+}
 img {
   display: block;
   max-width: 100%;
@@ -12,6 +21,12 @@ li {
   margin: 15px;
 
   list-style: none;
+}
+div.elements-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 ul.gallery {
   display: flex;
@@ -32,6 +47,8 @@ div.stats {
 .stats-item:not(:last-child) {
   margin-right: 10px;
 }
-.load-more {
+button.load-more {
   margin-top: 50px;
+
+  background-color: cyan;
 }
