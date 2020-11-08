@@ -2,6 +2,8 @@ import * as basicLightbox from 'basiclightbox';
 import apiService from './api-service';
 import refs from './refs';
 import template from './template.hbs';
+
+import 'basiclightbox/dist/basicLightbox.min.css';
 import './styles.css';
 
 const BASE_URL = 'https://pixabay.com/api/?';
@@ -9,7 +11,7 @@ let allListItems = null;
 
 refs.formEl.addEventListener('submit', loadPhotos);
 refs.loadMoreBtnEl.addEventListener('click', () => {
-  makeRequest().then(doScroll);
+  makeRequestAndRenderMarkup().then(doScroll);
   increasePage();
 });
 refs.galleryListEl.addEventListener('click', showLargePhoto);
@@ -18,8 +20,7 @@ function loadPhotos(event) {
   event.preventDefault();
 
   allListItems = document.querySelectorAll('li');
-  // apiService.options.q = refs.inpulEl.value;
-  apiService.options.q = 'dog';
+  apiService.options.q = refs.inpulEl.value;
 
   if (apiService.currentSerchQuery === '') {
     rememberCurrentSearchQuery();
@@ -34,11 +35,13 @@ function loadPhotos(event) {
     clearMarkup();
   }
 
-  makeRequest();
+  makeRequestAndRenderMarkup();
   increasePage();
+
+  refs.loadMoreBtnEl.removeAttribute('disabled');
 }
 
-function createMarkup(markup) {
+function renderMarkup(markup) {
   refs.galleryListEl.insertAdjacentHTML('beforeend', markup);
 }
 
@@ -48,12 +51,12 @@ function clearMarkup() {
   });
 }
 
-function makeRequest() {
+function makeRequestAndRenderMarkup() {
   return apiService
     .makeFetch(BASE_URL, apiService.options)
     .then(response => response.json())
     .then(template)
-    .then(createMarkup);
+    .then(renderMarkup);
 }
 
 function rememberCurrentSearchQuery() {
@@ -72,15 +75,12 @@ function doScroll() {
 }
 
 function showLargePhoto(event) {
-  // const instance = basicLightbox.create(`
-  //     <img src="https://pixabay.com/get/5ee0d44b4854b108f5d0846096293f77123edee5564c704f752b7cd39448c45d_1280.jpg">
-  // `);
-  // instance.show();
-
-  const array = [...document.querySelectorAll('li')];
-  array.find((element, index) => {
-    if (element === event.target.parentNode.parentNode) {
-      console.log(index);
-    }
-  });
+  if (event.target.nodeName === 'IMG') {
+    const instance = basicLightbox.create(`
+      <div class="modal">
+        <img src="${event.target.alt}" alt="" />
+      </div>
+      `);
+    instance.show();
+  }
 }

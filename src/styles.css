@@ -17,7 +17,7 @@ ul.gallery {
   display: flex;
   flex-wrap: wrap;
   width: 97vw;
-  margin: -15px;
+  margin: 20px -15px -15px;
   padding: 0px;
 }
 div.stats {
