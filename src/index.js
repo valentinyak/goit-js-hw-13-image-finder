@@ -8,11 +8,12 @@ import './styles.css';
 
 const BASE_URL = 'https://pixabay.com/api/?';
 let allListItems = null;
+const startBodyHeight = document.body.scrollHeight;
 
 refs.formEl.addEventListener('submit', loadPhotos);
 refs.loadMoreBtnEl.addEventListener('click', () => {
   makeRequestAndRenderMarkup().then(doScroll);
-  increasePage();
+  apiService.increasePage();
 });
 refs.galleryListEl.addEventListener('click', showLargePhoto);
 
@@ -36,7 +37,7 @@ function loadPhotos(event) {
   }
 
   makeRequestAndRenderMarkup();
-  increasePage();
+  apiService.increasePage();
 
   refs.loadMoreBtnEl.removeAttribute('disabled');
 }
@@ -67,13 +68,9 @@ function rememberCurrentSearchQuery() {
   apiService.currentSerchQuery = refs.inpulEl.value;
 }
 
-function increasePage() {
-  apiService.options.page += 1;
-}
-
 function doScroll() {
   window.scrollTo({
-    top: 800 * (apiService.options.page - 2),
+    top: document.body.scrollHeight - window.innerHeight - startBodyHeight,
     behavior: 'smooth',
   });
 }

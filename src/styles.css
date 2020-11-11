@@ -10,6 +10,8 @@ input {
 button {
   width: 120px;
   height: 30px;
+
+  border-radius: 3px;
 }
 img {
   display: block;

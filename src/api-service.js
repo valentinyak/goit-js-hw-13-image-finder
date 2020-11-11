@@ -9,6 +9,7 @@ export default {
     page: 1,
     per_page: 12,
   },
+  currentSerchQuery: '',
 
   createFetchURL(base_url, options) {
     let fetchURL = base_url;
@@ -24,5 +25,7 @@ export default {
     return fetch(this.createFetchURL(base_url, options));
   },
 
-  currentSerchQuery: '',
+  increasePage() {
+    this.options.page += 1;
+  },
 };
