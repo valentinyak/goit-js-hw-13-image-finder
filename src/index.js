@@ -11,10 +11,11 @@ let allListItems = null;
 const startBodyHeight = document.body.scrollHeight;
 
 refs.formEl.addEventListener('submit', loadPhotos);
-refs.loadMoreBtnEl.addEventListener('click', () => {
-  makeRequestAndRenderMarkup().then(doScroll);
-  apiService.increasePage();
-});
+// refs.loadMoreBtnEl.addEventListener('click', () => {
+// makeRequestAndRenderMarkup()
+// .then(doScroll);
+// apiService.increasePage();
+// });
 refs.galleryListEl.addEventListener('click', showLargePhoto);
 
 function loadPhotos(event) {
@@ -43,7 +44,7 @@ function loadPhotos(event) {
   makeRequestAndRenderMarkup();
   apiService.increasePage();
 
-  refs.loadMoreBtnEl.removeAttribute('disabled');
+  // refs.loadMoreBtnEl.removeAttribute('disabled');
 }
 
 function renderMarkup(markup) {
@@ -93,3 +94,17 @@ function showLargePhoto(event) {
     instance.show();
   }
 }
+
+function onEntry(entries) {
+  entries.forEach(entry => {
+    console.log(entry.isIntersecting);
+    console.log(refs.inpulEl.value);
+    if (entry.isIntersecting && refs.inpulEl.value) {
+      makeRequestAndRenderMarkup();
+      apiService.increasePage();
+    }
+  });
+}
+
+const observer = new IntersectionObserver(onEntry, { rootMargin: '0px' });
+observer.observe(refs.observerDiv);
