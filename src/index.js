@@ -21,14 +21,18 @@ function loadPhotos(event) {
   event.preventDefault();
 
   allListItems = document.querySelectorAll('li');
-  apiService.options.q = refs.inpulEl.value;
+  apiService.options.q = event.target.elements.query.value;
 
   if (apiService.currentSerchQuery === '') {
     rememberCurrentSearchQuery();
-  } else if (apiService.currentSerchQuery !== refs.inpulEl.value) {
+  } else if (
+    apiService.currentSerchQuery !== event.target.elements.query.value
+  ) {
     apiService.options.page = 1;
     rememberCurrentSearchQuery();
-  } else if (apiService.currentSerchQuery === refs.inpulEl.value) {
+  } else if (
+    apiService.currentSerchQuery === event.target.elements.query.value
+  ) {
     return;
   }
 
@@ -58,14 +62,18 @@ async function makeRequestAndRenderMarkup() {
   //   .then(response => response.json())
   //   .then(template)
   //   .then(renderMarkup);
-  const response = await apiService.makeFetch(BASE_URL, apiService.options);
-  const parsedResponse = await response.json();
-  const markup = await template(parsedResponse);
-  return renderMarkup(markup);
+  try {
+    const response = await apiService.makeFetch(BASE_URL, apiService.options);
+    const parsedResponse = await response.json();
+    const markup = await template(parsedResponse);
+    return renderMarkup(markup);
+  } catch (error) {
+    throw error;
+  }
 }
 
 function rememberCurrentSearchQuery() {
-  apiService.currentSerchQuery = refs.inpulEl.value;
+  apiService.currentSerchQuery = event.target.elements.query.value;
 }
 
 function doScroll() {
